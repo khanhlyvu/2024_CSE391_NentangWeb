@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quản lý sinh viên</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Quản lý sinh viên</h2>
+    <div class="mb-4">
+        <label for="lop" class="block text-gray-700 text-sm font-bold mb-2">Chọn lớp:</label>
+        <select id="lop" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></select>
+    </div>
+    <h3 class="text-xl font-bold mb-2">Danh sách sinh viên</h3>
+    <table id="bangSinhVien" class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Họ tên</th>
+                <th class="px-4 py-2">Mã SV</th>
+                <th class="px-4 py-2">Ngày sinh</th>
+                <th class="px-4 py-2">Hành động</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div id="formSinhVienModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true"></div>
+    <script>
+        $(document).ready(function() {
+            // Đọc dữ liệu từ data.json và hiển thị danh sách lớp vào dropdown
+            $.getJSON("data.json", function(data) {
+                $.each(data, function(key, value) {
+                    $('#lop').append('<option value="' + value.tenLop + '">' + value.tenLop + '</option>');
+                });
+                // Trigger sự kiện change để hiển thị danh sách sinh viên của lớp đầu tiên
+                $("#lop").change();
+            });
+
+            // Xử lý sự kiện khi chọn lớp từ dropdown
+            $("#lop").change(function() {
+                var selectedClass = $(this).children("option:selected").val();
+                $('#bangSinhVien tbody').empty();
+                $.getJSON("data.json", function(data) {
+                    $.each(data, function(key, value) {
+                        if (value.tenLop === selectedClass) {
+                            $.each(value.sinhVien, function(index, student) {
+                                $('#bangSinhVien tbody').append('<tr><th>' + student.hoTen + '</th><th>' + student.maSV + '</th><th>' + student.ngaySinh + '</th><th><button onclick="editStudent()">Sửa</button> <button onclick="deleteStudent()">Xóa</button></td></tr>');
+                            });
+                        }
+                    });
+                });
+            });
+
+            // Hàm xử lý sự kiện Sửa sinh viên
+            window.editStudent = function() {
+                // Viết mã xử lý sự kiện Sửa ở đây
+                alert("Chức năng Sửa đang được phát triển!");
+            }
+
+            // Hàm xử lý sự kiện Xóa sinh viên
+            window.deleteStudent = function() {
+                // Viết mã xử lý sự kiện Xóa ở đây
+                alert("Chức năng Xóa đang được phát triển!");
+            }
+        });
+    </script>
+</body>
+</html>
